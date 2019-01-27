@@ -41,7 +41,7 @@ $(document).ready(function() {
 				<thead class="thead-dark">
 					<tr>
 						<th scope="col">Name</th>
-						<th scope="col">Amount (Current)</th>
+						<th scope="col">Amount (Current / Available)</th>
 						<th scope="col">Type</th>
 					</tr>
 				</thead>		
@@ -134,14 +134,17 @@ error_log($plaid_client_id);
         $acct = json_decode($account_json,true);
 	
         foreach ($acct['accounts'] as $key => $value) {
-		if (strpos($value['balances']['current'], '-') == false) {
+                $amt_current = $value['balances']['current'];
+                $amt_avail = $value['balances']['available'];
+		if (is_null($amt_avail)) { $amt_avail = 'NA'; }
+
+		if (strpos($amt_current, '-') == false) {
 			$color = 'text-success';
 		}
 		else { $color = 'text-danger'; } 
 		echo '<tr>';
 		echo "<td>{$v['ins_name']}: {$value['name']}</td>";
-                $amt = $value['balances']['current'];
-                echo "<td><p class=\"$color\">$amt</p></td>";
+                echo "<td><p class=\"$color\">$amt_current / $amt_avail</p></td>";
                 echo "<td>{$value['subtype']}</td>";
 }
 
