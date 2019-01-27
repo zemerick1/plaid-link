@@ -66,7 +66,7 @@ function get_plaid_token($public_token) {
 
         return $exchange_token;
 }
-function plaid_getInstiture() { // Not implemented yet.
+function plaid_getInstitute() { // Not implemented yet.
 	
 }
 function plaid_addAccount($dbh, $cust_data) {
