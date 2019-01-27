@@ -5,6 +5,7 @@
 <html lang="en">  
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>PHP / Plaid-Link</title>
   <meta name="description" content="">
   <meta name="author" content="">
@@ -23,25 +24,44 @@ $(document).ready(function() {
 });        
  
   </script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
  
 </head>  
 <body>  
-  <p>Please link your <strong>primary bank account</strong>.</p>
-  <button id="linkButton">Link Your Bank Account</button>              
-<p>Current Linked Accounts</p>
-<table style="width=100%">
-  <tr>
-        <th>Name</th>
-        <th>Balance (Available)</th>
-        <th>Type</th>
-  </tr>
+<div class="container">
+	<!-- <div class="row">
+		<div class="col align-self-start">
+			LEFT
+		</div>
+	</div>-->
+	<div class="row">
+		<div class="col align-self-center">
+			<blockquote class="blockquote text-center"><h3>Current Linked Accounts</h3></blockquote>
+			<table class="table table-striped">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">Name</th>
+						<th scope="col">Amount (Current)</th>
+						<th scope="col">Type</th>
+					</tr>
+				</thead>		
+				<tbody>
 <?php 
 	$accounts = getAllAccounts($dbh); 
 	print_accounts($accounts, $plaid_client_id, $plaid_secret);
 	
-?>	
+?>
+</tbody>
 </table>
- 
+
+		</div>
+	</div>
+	<div class="row">
+		<div class="col align-self-center">
+			<blockquote class="blockquote text-center"><button id="linkButton" type="button" class="btn btn-primary">Link Your Bank Account</button></blockquote>
+		</div>
+	</div>
+</div>
   <script>
   var linkHandler = Plaid.create({
     selectAccount: true,
@@ -79,8 +99,9 @@ $(document).ready(function() {
   });
   </script>
  
-<!-- End Document  
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 </body>  
 </html> 
 <?php
@@ -113,12 +134,15 @@ error_log($plaid_client_id);
         $acct = json_decode($account_json,true);
 	
         foreach ($acct['accounts'] as $key => $value) {
-		echo "<tr>";
-		echo "<td>{$value['name']}</td>";
+		if (strpos($value['balances']['current'], '-') == false) {
+			$color = 'text-success';
+		}
+		else { $color = 'text-danger'; } 
+		echo '<tr>';
+		echo "<td>{$v['ins_name']}: {$value['name']}</td>";
                 $amt = $value['balances']['current'];
-                echo "<td><font color=\"green\">$amt</font></td>";
+                echo "<td><p class=\"$color\">$amt</p></td>";
                 echo "<td>{$value['subtype']}</td>";
-                echo "</tr>";
 }
 
         //check for errors
