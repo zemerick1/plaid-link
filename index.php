@@ -11,8 +11,7 @@
   <meta name="author" content="">
  
   <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
-  <script
-  src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
  
   <script type="text/javascript">
  
@@ -75,19 +74,23 @@ $(document).ready(function() {
       // The Link module finished loading.
     },
     onSuccess: function(public_token, metadata) {
-    // The onSuccess function is called when the user has successfully
-    // authenticated and selected an account to use.     
-      $.post( 'process_plaid_token.php', {pt:public_token,md:metadata,id:"<?php echo $customer_id;?>"}, function( data ) {                        
-          console.log("data : "+data);
-           if (data=="Success"){              
-              console.log("Success");
-             // window.location.replace("thankyou.php");//Let users know the process was successful 
-           }
-	   // else{
-           //  console.log("Error");
-           //  window.location.replace("error.php");//Let users know the process failed
-           //}
-        });    
+		// The onSuccess function is called when the user has successfully
+		// authenticated and selected an account to use.     
+		$.post('process_plaid_token.php', {
+			pt:public_token,
+			md:metadata,
+			id:"<?php echo $customer_id;?>"
+			}, function( data ) {                        
+				console.log("data : "+data);
+				if (data=="Success"){              
+					console.log("Success");
+					// window.location.replace("thankyou.php");//Let users know the process was successful 
+				}
+				else {
+					console.log("Error");
+					window.location.replace("error.php");//Let users know the process failed
+				}
+			});    
     },
     onExit: function(err, metadata) {
       // The user exited the Link flow. This is not an Error, so much as a user-directed exit   
@@ -99,7 +102,7 @@ $(document).ready(function() {
   });
   </script>
  
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 </body>  
