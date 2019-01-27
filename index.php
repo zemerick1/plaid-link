@@ -107,32 +107,7 @@ $(document).ready(function() {
 <?php
 function print_accounts($accounts, $plaid_client_id, $plaid_secret) {
 foreach ($accounts as $k=>$v) {
-error_log($plaid_client_id);
- $data = array(
-            "client_id" => $plaid_client_id,
-            "secret" => $plaid_secret,
-            "access_token"=>$v['a_token']
-        );
-        $plaid_url = 'https://development.plaid.com';
-        $data_fields = json_encode($data);
-
-        //initialize session
-        $ch=curl_init($plaid_url . "/accounts/get");
-
-        //set options
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_fields);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          'Content-Type: application/json',
-          'Content-Length: ' . strlen($data_fields))
-        );
-
-        //execute session
-	$account_json = curl_exec($ch);
-        $acct = json_decode($account_json,true);
-	
+	$acct = plaid_getAccounts($plaid_client_id, $plaid_secret, $v['a_token']);
         foreach ($acct['accounts'] as $key => $value) {
                 $amt_current = $value['balances']['current'];
                 $amt_avail = $value['balances']['available'];
