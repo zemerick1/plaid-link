@@ -12,7 +12,7 @@ if(!empty($_POST)) {
 			$customer_id = $_POST['id'];	
 			$metadata = $_POST['md'];
 			//Exchange public token for Plaid access_token
-			$plaid_token = get_plaid_token($_POST['pt']);
+			$plaid_token = get_plaid_token($dbh, $_POST['pt']);
 			// build array for customer data
 			$cust_data = array(
 				'a_token' => $plaid_token["access_token"],

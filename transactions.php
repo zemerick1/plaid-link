@@ -7,7 +7,7 @@
 <meta httpequiv="expires" content="0" />
 <html lang="en">
 <head>
-  <title>  </title>
+  <title>Transactions</title>
   <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
@@ -21,7 +21,7 @@
 	</div>-->
 	<div class="row">
 		<div class="col align-self-center">
-			<blockquote class="blockquote text-center"><h3>Current Linked Accounts</h3></blockquote>
+			<blockquote class="blockquote text-center"><h3>Transactions for last 30 Days</h3></blockquote>
 			<table class="table table-striped">
 				<thead class="thead-dark">
 					<tr>
