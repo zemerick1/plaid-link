@@ -51,12 +51,13 @@ function plaid_getAccounts($client_id, $secret, $token) {
 	return $acct;
 
 }
-function get_plaid_token($public_token) {
-        global $plaid_client_id, $plaid_secret, $plaid_url;
+function get_plaid_token($dbh, $public_token) {
+		$plaid_creds = plaid_getCreds($dbh, 'development');
+		
         $data = array(
-            "client_id" => $plaid_client_id,
-            "secret" => $plaid_secret,
-            "public_token" => $public_token
+            "client_id" => $plaid_creds['client_id'],
+            "secret" => $plaid_creds['secret'],
+            "public_token" => $plaid_creds['public']
         );
 
         $data_fields = json_encode($data);        

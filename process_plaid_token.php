@@ -1,12 +1,9 @@
 <?php  
 include 'include/config.php';
 include 'include/common.inc.php';
-
-error_reporting(E_ALL);  
-ini_set('display_errors', 1);  
   //Process Banking
-  //Plaid-Sandbox  //N.B. This should not be used on the page like this!
-  $plaid_env = 'development';
+	$plaid_creds = plaid_getCreds($dbh, 'development');
+  $plaid_env = $plaid_creds['plaid_env'];
 
 $error="";
 if(!empty($_POST)) {   
