@@ -45,9 +45,10 @@ $(document).ready(function() {
 					</tr>
 				</thead>		
 				<tbody>
-<?php 
-	$accounts = getAllAccounts($dbh); 
-	print_accounts($accounts, $plaid_client_id, $plaid_secret);
+<?php
+	$plaid_creds = plaid_getCreds($dbh, 'development');
+	$accounts = getAccounts($dbh, 'All'); 
+	print_accounts($accounts, $plaid_creds['client_id'], $plaid_creds['secret']);
 	
 ?>
 </tbody>
@@ -121,9 +122,13 @@ foreach ($accounts as $k=>$v) {
 		}
 		else { $color = 'text-danger'; } 
 		echo '<tr>';
-		echo "<td>{$v['ins_name']}: {$value['name']}</td>";
+		// shorten ins_name
+		$ins_name = substr($v['ins_name'], 0, 15);
+		$linkBuild = "<a href=\"transactions.php?acct={$v['account_id']}\">$ins_name: {$value['name']}</a>";
+		echo "<td>$linkBuild</td>";
                 echo "<td><p class=\"$color\">$amt_current / $amt_avail</p></td>";
                 echo "<td>{$value['subtype']}</td>";
+		echo "</tr>";
 }
 
         //check for errors

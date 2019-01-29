@@ -7,7 +7,6 @@ ini_set('display_errors', 1);
   //Process Banking
   //Plaid-Sandbox  //N.B. This should not be used on the page like this!
   $plaid_env = 'development';
-  $plaid_url = "https://development.plaid.com";
 
 $error="";
 if(!empty($_POST)) {   
@@ -20,7 +19,7 @@ if(!empty($_POST)) {
 			// build array for customer data
 			$cust_data = array(
 				'a_token' => $plaid_token["access_token"],
-				'account_id' => $metadata['institution']['name'],
+				'account_id' => $metadata['account_id'],
 				'item_id' => $plaid_token["item_id"],
 				'ins_id' => $metadata['institution']['institution_id'],
 				'ins_name' => $metadata['institution']['name']		

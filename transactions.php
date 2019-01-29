@@ -1,5 +1,6 @@
 <?php
 	include 'include/config.php';
+	include 'include/common.inc.php';
 ?>
 <!doctype html>
 <META HTTPEQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
@@ -7,63 +8,59 @@
 <html lang="en">
 <head>
   <title>  </title>
+  <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 </head>
 <body>
-<table style="width=100%">
-  <tr>
-	<th>Name</th>
-	<th>Amount</th>
-	<th>Date</th>
-  </tr>
-<?php
- $data = array(
-            "client_id" => $plaid_client_id,
-            "secret" => $plaid_secret,
-            "access_token"=> 'FIX THIS SHOULD PULL FROM DB',
-	    "start_date" => '2018-12-30',
-	    "end_date" => '2019-01-04'
-	);
-	$plaid_url = $plaid_url;  
-        $data_fields = json_encode($data);
-
-        //initialize session
-        $ch=curl_init($plaid_url . "/transactions/get");
-
-        //set options
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_fields);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-          'Content-Type: application/json',                                                                                
-          'Content-Length: ' . strlen($data_fields))                                                                       
-        );   
-
-        //execute session
-        $balance_json = curl_exec($ch);
-        $balance = json_decode($balance_json,true);
-	foreach ($balance['transactions'] as $key => $value) {
-		echo "<tr><td>";
-		echo $value['name'];
-		echo "</td><td>";
-		$amt = $value['amount'];
-		if (strpos($amt, '-') !== false) { 
-			$amt = str_replace('-','',$amt);
-			echo "<font color=\"green\">$amt</font>"; 
-			}
-			else { echo "<font color=\"red\">$amt</font>"; }
-		#echo $value['amount'];
+<div class="container">
+	<!-- <div class="row">
+		<div class="col align-self-start">
+			LEFT
+		</div>
+	</div>-->
+	<div class="row">
+		<div class="col align-self-center">
+			<blockquote class="blockquote text-center"><h3>Current Linked Accounts</h3></blockquote>
+			<table class="table table-striped">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">Place</th>
+						<th scope="col">Amount</th>
+						<th scope="col">Date</th>
+					</tr>
+				</thead>		
+				<tbody>
+<?php 
+	// Get Transactions
+	$account_id = $_GET['acct'];
+	$date = date('Y-m-d');
+	$startDate = date('Y-m-d', strtotime($date. ' - 30 days'));
+	$transactions = plaid_getTransactions($dbh, $account_id ,$startDate, date('Y-m-d'));
+	foreach($transactions as $key => $value) {
+		echo "<tr>";
+		echo "<td>{$value['name']}</td>";
+		echo "<td>{$value['amount']}</td>";
+		echo "<td>{$value['date']}</td>";
 		echo "</td>";
-		echo "<td>";
-		echo $value['date'];
-		echo "</td></tr>";
-}
-		echo "</table></body></html>"; 
-
-        //check for errors
-        if(isset($balance['error_code'])){
-          error_log("Plaid Error Message: " . $balance_json);
-        }            
-        //close session
-        curl_close($ch);
+	}
 ?>
+</tbody>
+</table>
+
+		</div>
+	</div>
+	<div class="row">
+		<div class="col align-self-center">
+			<blockquote class="blockquote text-center">Centered Text</blockquote>
+		</div>
+	</div>
+</div>
+<?php
+
+?>
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</body>
+</html>
