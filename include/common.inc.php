@@ -57,13 +57,13 @@ function get_plaid_token($dbh, $public_token) {
         $data = array(
             "client_id" => $plaid_creds['client_id'],
             "secret" => $plaid_creds['secret'],
-            "public_token" => $plaid_creds['public']
+            "public_token" => $public_token
         );
 
         $data_fields = json_encode($data);        
 
         //initialize session
-        $ch=curl_init($plaid_url . "/item/public_token/exchange");
+        $ch=curl_init($plaid_creds['url'] . "/item/public_token/exchange");
 
         //set options
         curl_setopt($ch, CURLOPT_POST, true);
@@ -79,8 +79,7 @@ function get_plaid_token($dbh, $public_token) {
         $token_json = curl_exec($ch);
         $exchange_token = json_decode($token_json,true);          
         //close session
-        curl_close($ch);        
-
+        curl_close($ch);  
         return $exchange_token;
 }
 function plaid_getInstitute() { // Not implemented yet.

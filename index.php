@@ -65,10 +65,10 @@ $(document).ready(function() {
   <script>
   var linkHandler = Plaid.create({
     selectAccount: true,
-    env: '<?php echo $plaid_env ?>',
+    env: '<?php echo $plaid_creds['plaid_env']; ?>',
     apiVersion: 'v2',
-    clientName: 'Client Name',
-    key: '<?php echo $plaid_public ?>',
+    clientName: 'EmerickCC',
+    key: '<?php echo $plaid_creds['public']; ?>',
     product: ['auth', 'transactions'],
     //webhook: 'https://myurl.com/webhooks/p_responses.php',
     onLoad: function() {
@@ -80,7 +80,7 @@ $(document).ready(function() {
 		$.post('process_plaid_token.php', {
 			pt:public_token,
 			md:metadata,
-			id:"<?php echo $customer_id;?>"
+			id:"<?php echo 'ID101'; ?>"
 			}, function( data ) {                        
 				console.log("data : "+data);
 				if (data=="Success"){              
