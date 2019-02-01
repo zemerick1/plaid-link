@@ -114,14 +114,14 @@ function print_accounts($accounts, $plaid_client_id, $plaid_secret) {
 foreach ($accounts as $k=>$v) {
 	$acct = plaid_getAccounts($plaid_client_id, $plaid_secret, $v['a_token']);
         foreach ($acct['accounts'] as $key => $value) {
-                $amt_current = $value['balances']['current'];
-                $amt_avail = $value['balances']['available'];
+                $amt_current = sprintf("%0.2f", $value['balances']['current']);
+                $amt_avail = sprintf("%0.2f", $value['balances']['available']);
 		if (is_null($amt_avail)) { $amt_avail = 'NA'; }
 
 		if (strpos($amt_current, '-') == false) {
 			$color = 'text-success';
 		}
-		else { $color = 'text-danger'; } 
+		else { $color = 'text-danger'; }
 		echo '<tr>';
 		// shorten ins_name
 		$ins_name = substr($v['ins_name'], 0, 15);

@@ -37,10 +37,21 @@
 	$date = date('Y-m-d');
 	$startDate = date('Y-m-d', strtotime($date. ' - 30 days'));
 	$transactions = plaid_getTransactions($dbh, $account_id ,$startDate, date('Y-m-d'));
+	$amt_in = 0;
+	$amt_out = 0;
 	foreach($transactions as $key => $value) {
+		$amount = sprintf("%0.2f", $value['amount']);
+		if ($amount < 0) {
+			$color = 'text-success';
+			$amt_in += $amount;
+		}
+		else { 
+			$color = 'text-danger';
+			$amt_out += $amount;
+		}
 		echo "<tr>";
 		echo "<td>{$value['name']}</td>";
-		echo "<td>{$value['amount']}</td>";
+		echo "<td><p class=\"$color\">$amount</p></td>";
 		echo "<td>{$value['date']}</td>";
 		echo "</td>";
 	}
@@ -52,7 +63,7 @@
 	</div>
 	<div class="row">
 		<div class="col align-self-center">
-			<blockquote class="blockquote text-center">Centered Text</blockquote>
+			<blockquote class="blockquote text-center">Totals: <?php echo "IN: " . str_replace("-","",$amt_in) . " / OUT: " . $amt_out; ?></blockquote>
 		</div>
 	</div>
 </div>

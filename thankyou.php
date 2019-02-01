@@ -1,7 +1,6 @@
 <?php
   include 'include/config.php';
-  include 'include/common.inc.php';
-  
+  include 'include/common.inc.php';  
 ?>
 <html lang="en">  
 <head>
