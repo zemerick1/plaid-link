@@ -1,4 +1,36 @@
 <?php
+function plaid_getDwollaToken($dbh, $cust_data) {
+	$creds = plaid_getCreds($dbh, 'development');
+	$plaid_url = 'https://development.plaid.com/processor/dwolla/processor_token/create';
+	$a_token = $cust_data['a_token'];
+	$accountID = $cust_data['account_id'];
+	
+$data = array(
+			"client_id" => $creds['client_id'],
+			"secret" => $creds['secret'],
+			"access_token" => $a_token,
+			"account_id" => $accountID
+		);
+        $data_fields = json_encode($data);
+
+        //initialize session
+        $ch=curl_init($plaid_url);
+
+        //set options
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_fields);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+          'Content-Type: application/json',
+          'Content-Length: ' . strlen($data_fields))
+        );
+
+        //execute session
+        $token_json = curl_exec($ch);
+        $token = json_decode($account_json,true);
+	return $token;
+}
 function getAccounts($dbh, $accountID) {
 	if ($accountID == 'All') {
 		$sth = $dbh->prepare("SELECT * FROM cust_accounts");

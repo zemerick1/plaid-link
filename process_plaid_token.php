@@ -23,6 +23,8 @@ if(!empty($_POST)) {
 				'cust_id' => $customer_id
 			);
 			plaid_addAccount($dbh, $cust_data);
+			// We're not doing anything with the token until we go live.
+			$dToken = plaid_getDwollaToken($dbh, $cust_data);
 			echo "Success";//The message Javascript code will look for
 		
 		} else {

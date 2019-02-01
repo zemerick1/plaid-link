@@ -49,6 +49,9 @@ $accounts = getAccounts($dbh, 'All');
 				  <div class="form-group">
 					<label for="amount">Dollar Amount</label>
 					<input type="text" class="form-control" id="amount" placeholder="Amount (USD)">
+					<small id="amountHelp" class="form-text text-muted">
+					Transfer will be processed for today's date.
+					</small>
 				  </div>
 			  <button type="submit" class="btn btn-primary">Submit</button>
 			</form>
