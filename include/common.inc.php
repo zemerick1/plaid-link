@@ -1,13 +1,13 @@
 <?php
 function getAccounts($dbh, $accountID) {
 	if ($accountID == 'All') {
-		$sth = $dbh->prepare("SELECT * FROM customers");
+		$sth = $dbh->prepare("SELECT * FROM cust_accounts");
 		$sth->execute();
 		$accounts = $sth->fetchAll(PDO::FETCH_ASSOC);
 		unset($sth);
 		return $accounts;
 	} else {
-		$sth = $dbh->prepare("SELECT * FROM customers WHERE account_id = :accountID");
+		$sth = $dbh->prepare("SELECT * FROM cust_accounts WHERE account_id = :accountID");
 		$sth->bindParam(':accountID', $accountID);
 		$sth->execute();
 		$accounts = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -86,7 +86,7 @@ function plaid_getInstitute() { // Not implemented yet.
 	
 }
 function plaid_addAccount($dbh, $cust_data) {
-	$sth = $dbh->prepare("INSERT INTO customers (a_token, account_id, item_id, ins_id, ins_name) value (?,?,?,?,?)");
+	$sth = $dbh->prepare("INSERT INTO cust_accounts (a_token, account_id, item_id, ins_id, ins_name, cust_id) value (?,?,?,?,?,?)");
 	$sth->execute(array_values($cust_data));
 	unset($sth);
 	return true;

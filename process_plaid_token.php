@@ -19,7 +19,8 @@ if(!empty($_POST)) {
 				'account_id' => $metadata['account_id'],
 				'item_id' => $plaid_token["item_id"],
 				'ins_id' => $metadata['institution']['institution_id'],
-				'ins_name' => $metadata['institution']['name']		
+				'ins_name' => $metadata['institution']['name'],
+				'cust_id' => $customer_id
 			);
 			plaid_addAccount($dbh, $cust_data);
 			echo "Success";//The message Javascript code will look for

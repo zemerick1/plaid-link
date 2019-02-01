@@ -1,6 +1,7 @@
 <?php
   include 'include/config.php';
   include 'include/common.inc.php';
+  
 ?>
 <html lang="en">  
 <head>
@@ -80,12 +81,12 @@ $(document).ready(function() {
 		$.post('process_plaid_token.php', {
 			pt:public_token,
 			md:metadata,
-			id:"<?php echo 'ID101'; ?>"
+			id:"<?php echo '1'; ?>"
 			}, function( data ) {                        
 				console.log("data : "+data);
 				if (data=="Success"){              
 					console.log("Success");
-					// window.location.replace("thankyou.php");//Let users know the process was successful 
+					window.location.replace("thankyou.php");//Let users know the process was successful 
 				}
 				else {
 					console.log("Error");
