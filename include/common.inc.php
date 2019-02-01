@@ -1,8 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 function dwolla_createSource($url, $token) {
 	// Need function to get Dwolla Keys
 	// $dwolla_key = dwolla_getCreds();
