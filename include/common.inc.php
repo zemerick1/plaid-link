@@ -1,4 +1,39 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+function dwolla_createSource($url, $token) {
+	// Need function to get Dwolla Keys
+	// $dwolla_key = dwolla_getCreds();
+	// URL = https://api-sandbox.dwolla.com/customers/UNIQUE GUID/funding-sources
+	$dwolla_url = $url;
+$data = array(
+			"plaidToken" => $token,
+			"name" => "INS_Name" // unsure about this still.
+		);
+        $data_fields = json_encode($data);
+
+        //initialize session
+        $ch=curl_init($dwolla_url);
+
+        //set options
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_fields);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        // Need to test this. . perhaps switch it to JSON to handle $DWOLLA_KEY easier.
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+          'Content-Type: application/vnd.dwolla.v1.hal+json',
+		  'Accept: application/vnd.dwolla.v1.hal+json',
+          'Authorization: Bearer DWOLLA_KEY' // From dwolla_getCreds()
+        ));
+
+        //execute session
+        $newSource_json = curl_exec($ch);
+        $newSource = json_decode($newSource_json,true);
+	return $newSource; // This should return a URL. If not we need to handle gracefully.
+}
 function plaid_getDwollaToken($dbh, $cust_data) {
 	$creds = plaid_getCreds($dbh, 'development');
 	$plaid_url = 'https://development.plaid.com/processor/dwolla/processor_token/create';
@@ -28,7 +63,7 @@ $data = array(
 
         //execute session
         $token_json = curl_exec($ch);
-        $token = json_decode($account_json,true);
+        $token = json_decode($token_json,true);
 	return $token;
 }
 function getAccounts($dbh, $accountID) {
